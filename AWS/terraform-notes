@@ -138,18 +138,18 @@ A resource block declares a resource of a given type ("aws_instance") with a giv
 resource "aws_instance" "example" {
   ami           = "ami-2757f631"
   instance_type = "t2.micro"
-
-  ebs_block_device {
-    device_name = "/dev/xvdb"
-    volume_type = "gp2"
-    volume_size = 100
-  }
 }
 
+resource "aws_ebs_volume" "example-volume" {
+  availability_zone = "${aws_instance.example.availability_zone}"
+  type              = "gp2"
+  size              = 100
+}
+ 
 resource "aws_volume_attachment" "ebs_att" {
   device_name = "/dev/sdh"
   volume_id   = "${aws_ebs_volume.example.id}"
-  instance_id = "${aws_instance.web.id}"
+  instance_id = "${aws_instance.example.id}"
 }
 
 
