@@ -510,7 +510,19 @@ instance_protocol = "http"
 }
 
 
+------------------------------------------------------------------------------------------------------------------------------
+###data sources
+##To get the latest AMI without manually hard coding the the value
 
+data "aws_ami" "example" {
+  most_recent = true
+
+  owners = ["self"]
+  tags = {
+    Name   = "app-server"
+    Tested = "true"
+  }
+}
 
 
 
