@@ -526,3 +526,4 @@ instance_protocol = "http"
 
 Terraform notes
 https://medium.com/@hmalgewatta/setting-up-an-aws-ec2-instance-with-ssh-access-using-terraform-c336c812322f
+https://letslearndevops.com/2017/07/24/how-to-create-a-vpc-with-terraform/
