@@ -599,8 +599,12 @@ a.Error: Error running plan: 1 error(s) occurred:
 Solution
 start the chrony service.
 
+b.* provider.aws: error validating provider credentials: error calling sts:GetCallerIdentity: SignatureDoesNotMatch: Signature expired: 20190509T131339Z is now earlier than 20190509T135301Z (20190509T140801Z - 15 min.)
+        status code: 403, request id: db51557d-7263-11e9-9a77-d5914a2f1
 
-
+solution
+root@centos7-jen terraform]# ntpdate pool.ntp.org
+ 9 May 19:39:24 ntpdate[29017]: step time server 123.108.200.124 offset 3254.804513 sec
 
 
 
