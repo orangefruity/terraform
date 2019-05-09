@@ -589,8 +589,15 @@ data "aws_ami" "example" {
 
 
 
+Errors
 
+a.Error: Error running plan: 1 error(s) occurred:
 
+* provider.aws: error validating provider credentials: error calling sts:GetCallerIdentity: SignatureDoesNotMatch: Signature expired: 20190508T154320Z is now earlier than 20190509T073124Z (20190509T074624Z - 15 min.)
+        status code: 403, request id: 8bb46cc2-722e-11e9-905b-a3bb4bf74c80
+
+Solution
+start the chrony service.
 
 
 
