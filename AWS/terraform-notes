@@ -557,20 +557,7 @@ terraform destroy
 This will destroy the infra created.
 
 
-#Create a Loadbalancer
------------------------
-resource "aws_elb" "example" {
-name = "terraform-asg-example"
-availability_zones = ["${data.aws_availability_zones.all.names}"]
 
-
-listener {
-lb_port = 80
-lb_protocol = "http"
-instance_port = "${var.server_port}"
-instance_protocol = "http"
-}
-}
 
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -607,9 +594,52 @@ most_recent = true
 }
 
 
+------------------------------------------------------------------------------------------------------------------------------------
+##Using for loop in terraform
+
+resource "aws_instance" "example" {
+  count = 3
+  ami = "ami-2d39803a"
+  instance_type = "t2.micro"
+  tags {
+    Name = "example-${count.index}"
+  }
+}
+
+This will create instances in the same AZs what if we want create 3 instances in 3 differnt AZs
+for that we need define a input variable that contains a list of AZs to Use
+
+In the variables.tf
+variable "azs" {
+  description = "Run the EC2 Instances in these Availability Zones"
+  type = "list"
+  default = ["us-east-1a", "us-east-1b", "us-east-1c"]
+}
 
 
+In the main main.tf
+resource "aws_instance" "example" {
+  count = 3
+  ami = "ami-2d39803a"
+  instance_type = "t2.micro"
+  availability_zone = "${element(var.azs, count.index)}"
+  tags {
+    Name = "example-${count.index}"
+  }
+}
 
+##if you want to output all the Ip address you use below output
+output "public_ips" {
+  value = ["${aws_instance.example.*.public_ip}"]
+}
+
+
+##if you want the output of the first IP then
+output "first_ip" {
+  value = ["${aws_instance.example.0.public_ip}"]
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
 Errors
 
 a.Error: Error running plan: 1 error(s) occurred:
