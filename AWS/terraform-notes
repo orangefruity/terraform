@@ -639,6 +639,13 @@ output "first_ip" {
   value = ["${aws_instance.example.0.public_ip}"]
 }
 
+
+
+#conditions in terraform
+
+resource "aws_instance" "web" {
+  subnet = "${var.env == "production" ? var.prod_subnet : var.dev_subnet}"
+}
 -----------------------------------------------------------------------------------------------------------------------------
 Errors
 
