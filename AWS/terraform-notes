@@ -1,5 +1,24 @@
 Terraform
 
+terraform validate
+
+
+The terraform validate command is used to validate the syntax of the terraform files. Terraform performs a syntax check on all the terraform files in the directory, and will display an error if any of the files doesn't validate.
+
+This command does not check formatting (e.g. tabs vs spaces, newlines, comments etc.).
+
+The following can be reported:
+
+invalid HCL syntax (e.g. missing trailing quote or equal sign)
+invalid HCL references (e.g. variable name or attribute which doesn't exist)
+same provider declared multiple times
+same module declared multiple times
+same resource declared multiple times
+invalid module name
+
+
+
+
 resource cheat list
 
 > terraform
