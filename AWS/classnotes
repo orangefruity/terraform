@@ -1,0 +1,174 @@
+what is IAC
+
+
+There are 4 broad catagories of IAC tools:
+
+1. Ad hoc scripts
+2. Configration Management tools
+3. Sever templating tools
+4. Orchestration tools
+
+
+Adhoc scripts:: Bash Ruby python
+Configration Management tools:  Like Ansible,chef,puppet
+Server templating tools: packer,docker
+Ocherstration tools: Terraform,Cloud formation
+
+
+Benefits of the IAC
+
+Verion control
+	You can store your IAC source files in version control, which means the entire history of your infrastructure is now captured in the commit log
+
+Automation and Faster
+	If the deployment process is automated, it’ll be significantly faster, since a computer can carry out the deployment steps far faster than a person, and safer, since an automated process will be more consistent, more repeatable, and not prone to manual error
+
+Documentation
+	In other words, IAC acts as documentation, allowing everyone in the organization to understand how things work.
+
+Code reusbility
+	Code can reused by changing the setting and provisiong the resources.
+
+Preview and validation
+	ESP in terraform  we can preview the code before apply to the cloud.
+
+Reability
+	It is having good readbility.
+
+	resource "aws_instance" "example" {
+  ami = "ami-40d28157"
+  instance_type = "t2.micro"
+}
+
+resource "dnsimple_record" "example" {
+  domain = "example.com"
+  name = "test"
+  value = "${aws_instance.example.public_ip}"
+  type = "A"
+}
+
+
+Terraform
+---------------
+open source tool that allows you to define your infrastructure as code using a simple, declarative programming language
+and to deploy and manage that infrastructure across a variety of cloud providers (including Amazon Web Services, Azure, Google Cloud, DigitalOcean, and many others) using a few commands.
+
+
+Terraform is an open source tool written in the Go programming language.The Go code compiles down into a single binary
+called, not surprisingly, terraform.
+
+It Uses HCL,it uses a Json syntax ,It almost supports 60+ providers through API Interation 
+
+
+
+Terraform vs other tools.
+------------------------------
+Procedural vs declartive model.
+Procedural code does NOT fully capture the state of the infrastructure
+Client/server architecture vs client-only architecture
+
+
+Installing terraform
+---------------------
+Download the Binary from https://www.terraform.io/downloads.html
+unzip it
+
+
+To check if terraform is working 
+
+> terraform
+usage: terraform [--version] [--help] <command> [<args>]
+
+Available commands are:
+    apply       Builds or changes infrastructure
+    destroy     Destroy Terraform-managed infrastructure
+    get         Download and install modules for the configuration
+    graph       Create a visual graph of Terraform resources
+    (...)
+
+
+Configuring the keys
+----------------------
+
+
+Method-1:
+---------
+provider "aws" {
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region     = "us-east-1"
+}
+
+Method 2:
+-------------
+As environment variables
+Providing the creds as env variables
+$ export AWS_ACCESS_KEY_ID="anaccesskey"
+$ export AWS_SECRET_ACCESS_KEY="asecretkey"
+$ export AWS_DEFAULT_REGION="us-west-2
+
+
+
+Method3:
+--------
+provider "aws" {
+  region                  = "us-west-2"
+  shared_credentials_file = "/Users/tf_user/.aws/creds"
+  profile                 = "customprofile"
+}
+
+
+
+Understanding the resource and providers
+---------------------------------------
+Providers:
+ 	A provider is responsible for understanding API interations and exposing the resources.
+ 	mandatory data that is required for providers is
+		- Name of the provider
+		- Keys required that need to connect 
+		- Region and profile
+
+Example:
+provider "aws" {
+  region                  = "us-west-2"
+  shared_credentials_file = "/Users/tf_user/.aws/creds"
+  profile                 = "customprofile"
+}
+
+
+Resources:
+	Resources are the most important element in the Terraform language. Each resource block describes one or more infrastructure objects, such as virtual networks, compute instances, or higher-level components such as DNS records
+
+Example
+	resource "aws_instance" "web" {
+ 	 ami           = "ami-a1b2c3d4"
+  	instance_type = "t2.micro"
+	}
+
+
+A resource block declares a resource of a given type ("aws_instance") with a given local name ("web"). The name is used to refer to this resource from elsewhere in the same Terraform module, but has no significance outside of the scope of a module.
+
+Note: Each resource type in turn belongs to a provider,
+
+
+Stages in the terraform
+---------------------------
+
+1.	Write : IAC
+2.  plan:: plan  the changes before applying
+3.  Create:: Reproduce the infrastuture
+
+
+
+Use case: Creating a docker container from image.
+https://github.com/anandvamsi/terraform-recipes-/blob/master/docker/container_creation/main.tf
+
+Use case : creating a docker container from the variables
+https://github.com/anandvamsi/terraform-recipes-/blob/master/docker/container_creation/main.tf
+
+Use Case :: Breaking up the main file and splitting.
+https://github.com/anandvamsi/terraform-recipes-/blob/master/docker/container_vars_break/variable.tf
+
+use Case: Creating a instance
+https://github.com/anandvamsi/terraform-recipes-/tree/master/single-instance
+
