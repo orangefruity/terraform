@@ -1,5 +1,47 @@
-what is IAC
 
+part1
+What is meant by IAC and how this benefits IT Infrastrure team
+what is meant by terraform, what are competetion 
+Installing terraform
+Configuring keys in terraform
+
+Part2.
+Understanding the providers,Resources and variables,output
+Writing terraform files.
+Stages of execution 
+terraform init
+terraform validate
+terraform plan
+Terraform has "Planning" steo where it generates the exeution plan,Plan will be trigerred  
+when you execute apply
+Terraform let you to avoid any suprises when Terraform manipulates the infra
+terraform apply
+Understanding the terraform state files.
+
+Use cases:Spinning up of docker container from image using terraform.
+Use cases:Create a instance withh key_name(already exist)
+Use cases: Create a instance with a new key_name file with file varibles
+
+
+part3:
+Understanding ther varibles in terraform.
+files
+maps and lookups
+
+Understanding the looping in terraform.
+
+Usecase: create multiple instances in terraform
+Usecase: create IAM users in terraform
+
+
+
+
+
+
+
+what is IAC
+The idea behind infrastructure as code (IAC) is 
+that you write and execute code to define, deploy, and update your infrastructure
 
 There are 4 broad catagories of IAC tools:
 
