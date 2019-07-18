@@ -350,3 +350,137 @@ https://github.com/anandvamsi/terraform-recipes-/blob/master/docker/container_va
 use Case: Creating a instance
 https://github.com/anandvamsi/terraform-recipes-/tree/master/single-instance
 
+
+
+
+
+
+
+terraform state show 
+Terraform refresh: Reconciling real-world drift
+lifecycle option 
+	- delete option 
+
+#IAM users
+		- using count 
+		- Using list custom list
+
+#S3 bucket
+		 - Bucket creation
+		 - Bucket life cycle creation 
+
+
+
+
+
+
+
+#terraform show 
+------------------
+	will show all the output/metadata of the resource
+
+[root@kworkernode1 example1]# terraform show
+# docker_container.container_id:
+resource "docker_container" "container_id" {
+    attach           = false
+    gateway          = "172.17.0.1"
+    id               = "cfc9e3d4bfec8657a83100d71d00bf5174cff63e6bfd9b76bf3d3c25db70b348"
+    image            = "sha256:f3b796dbbc456ea9d1dfe7391f9265cf3c529ae6eb6b6c519db9f54e3e758d6a"
+    ip_address       = "172.17.0.2"
+    ip_prefix_length = 16
+    log_driver       = "json-file"
+    logs             = false
+    must_run         = true
+    name             = "myblog"
+    network_data     = [
+        {
+            gateway          = "172.17.0.1"
+            ip_address       = "172.17.0.2"
+            ip_prefix_length = 16
+            network_name     = "bridge"
+        },
+    ]
+    restart          = "no"
+    rm               = false
+    start            = true
+
+    ports {
+        external = 801
+        internal = 2368
+        ip       = "0.0.0.0"
+        protocol = "tcp"
+    }
+}
+
+# docker_image.image_id:
+resource "docker_image" "image_id" {
+    id     = "sha256:f3b796dbbc456ea9d1dfe7391f9265cf3c529ae6eb6b6c519db9f54e3e758d6adocker.io/ghost"
+    latest = "sha256:f3b796dbbc456ea9d1dfe7391f9265cf3c529ae6eb6b6c519db9f54e3e758d6a"
+    name   = "docker.io/ghost"
+}
+
+
+Outputs:
+
+container_name = "myblog"
+ip_address = "172.17.0.2"
+
+
+
+terraform state show
+----------------------------
+To inspect only specfic resources
+
+ terraform state show aws_instance.example
+
+
+
+terraform refresh
+-------------------
+What Terraform is doing here is reconciling the resources tracked by the state file with the real world
+
+It does this by querying your infrastructure providers to find out what's actually running and the current configuration, and updating the state file with this new information. Terraform is designed to co-exist with other tools as well as manually provisioned resources and so it only refreshes resources under its management.
+
+
+Notes:
+Running refresh does not modify infrastructure, but does modify the state file
+
+
+
+
+[root@kworkernode1 example2]# cksum terraform.tfstate
+1438403226 5653 terraform.tfstate
+
+Do the changes to the resources
+[root@kworkernode1 example2]# cksum terraform.tfstate
+452845953 5701 terraform.tfstate
+
+
+
+
+Lifecycle options: Configuring how Terraform manages drift
+----------------------------------------------------------------
+Preventing Reprovision of Resource using Lifecycle Hooks
+
+lifecycle {
+    prevent_destroy = true
+  }
+
+Terraform provides some lifecycle configuration options for every resource, regardless of provider, that give you more control over how Terraform reconciles your desired configuration against state when generating plans.
+
+One of these options is prevent_destroy. When this is set to true, any plan that includes a destroy of this resource will return an error message. Use this flag to provide extra protection against the accidental deletion of any essential resources
+
+
+
+
+Life cycle hooks
+----------------------------------------
+
+resource "digitalocean_droplet" "db" {
+    lifecycle {
+        prevent_destroy = true
+        ignore_changes = ["image", ]
+    }
+}
+
+By adding the ignore_changes  parameter to the lifecycle  block, we can tell our Terraform resource definition to ignore any changes to the image  field. This makes sure that Terraform does not attempt to reprovision the resource whenever the image changes
