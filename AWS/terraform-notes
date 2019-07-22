@@ -1,7 +1,6 @@
-Terraform
+###########   Terraform   ###########
 
 terraform validate
-
 
 The terraform validate command is used to validate the syntax of the terraform files. Terraform performs a syntax check on all the terraform files in the directory, and will display an error if any of the files doesn't validate.
 
@@ -15,8 +14,6 @@ same provider declared multiple times
 same module declared multiple times
 same resource declared multiple times
 invalid module name
-
-
 
 
 resource cheat list
