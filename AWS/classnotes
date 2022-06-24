@@ -22,7 +22,6 @@ Use cases:Spinning up of docker container from image using terraform.
 Use cases:Create a instance withh key_name(already exist)
 Use cases: Create a instance with a new key_name file with file varibles
 
-
 part3:
 Understanding ther varibles in terraform.
 files
@@ -33,11 +32,8 @@ Understanding the looping in terraform.
 Usecase: create multiple instances in terraform
 Usecase: create IAM users in terraform
 
-
 ----------------------------------------------------------
 Day 2
-
-
 
 terraform state show 
 Terraform refresh: Reconciling real-world drift
@@ -51,12 +47,6 @@ lifecycle option
 #S3 bucket
 		 - Bucket creation
 		 - Bucket life cycle creation 
-
-
-
-
-
-
 
 #terraform show 
 ------------------
@@ -102,13 +92,10 @@ resource "docker_image" "image_id" {
     name   = "docker.io/ghost"
 }
 
-
 Outputs:
 
 container_name = "myblog"
 ip_address = "172.17.0.2"
-
-
 
 terraform state show
 ----------------------------
@@ -116,20 +103,14 @@ To inspect only specfic resources
 
  terraform state show aws_instance.example
 
-
-
 terraform refresh
 -------------------
 What Terraform is doing here is reconciling the resources tracked by the state file with the real world
 
 It does this by querying your infrastructure providers to find out what's actually running and the current configuration, and updating the state file with this new information. Terraform is designed to co-exist with other tools as well as manually provisioned resources and so it only refreshes resources under its management.
 
-
 Notes:
 Running refresh does not modify infrastructure, but does modify the state file
-
-
-
 
 [root@kworkernode1 example2]# cksum terraform.tfstate
 1438403226 5653 terraform.tfstate
@@ -137,8 +118,6 @@ Running refresh does not modify infrastructure, but does modify the state file
 Do the changes to the resources
 [root@kworkernode1 example2]# cksum terraform.tfstate
 452845953 5701 terraform.tfstate
-
-
 
 
 Lifecycle options: Configuring how Terraform manages drift
@@ -154,8 +133,6 @@ Terraform provides some lifecycle configuration options for every resource, rega
 One of these options is prevent_destroy. When this is set to true, any plan that includes a destroy of this resource will return an error message. Use this flag to provide extra protection against the accidental deletion of any essential resources
 
 
-
-
 Life cycle hooks
 ----------------------------------------
 
@@ -168,13 +145,6 @@ resource "digitalocean_droplet" "db" {
 
 By adding the ignore_changes  parameter to the lifecycle  block, we can tell our Terraform resource definition to ignore any changes to the image  field. This makes sure that Terraform does not attempt to reprovision the resource whenever the image changes
 
-
-
-
-
-
-
-
 what is IAC
 The idea behind infrastructure as code (IAC) is 
 that you write and execute code to define, deploy, and update your infrastructure
@@ -186,12 +156,10 @@ There are 4 broad catagories of IAC tools:
 3. Sever templating tools
 4. Orchestration tools
 
-
 Adhoc scripts:: Bash Ruby python
 Configration Management tools:  Like Ansible,chef,puppet
 Server templating tools: packer,docker
 Ocherstration tools: Terraform,Cloud formation
-
 
 Benefits of the IAC
 
@@ -231,20 +199,16 @@ Terraform
 open source tool that allows you to define your infrastructure as code using a simple, declarative programming language
 and to deploy and manage that infrastructure across a variety of cloud providers (including Amazon Web Services, Azure, Google Cloud, DigitalOcean, and many others) using a few commands.
 
-
 Terraform is an open source tool written in the Go programming language.The Go code compiles down into a single binary
 called, not surprisingly, terraform.
 
 It Uses HCL,it uses a Json syntax ,It almost supports 60+ providers through API Interation 
-
-
 
 Terraform vs other tools.
 ------------------------------
 Procedural vs declartive model.
 Procedural code does NOT fully capture the state of the infrastructure
 Client/server architecture vs client-only architecture
-
 
 Installing terraform
 ---------------------
@@ -264,10 +228,8 @@ Available commands are:
     graph       Create a visual graph of Terraform resources
     (...)
 
-
 Configuring the keys
 ----------------------
-
 
 Method-1:
 ---------
@@ -285,8 +247,6 @@ $ export AWS_ACCESS_KEY_ID="anaccesskey"
 $ export AWS_SECRET_ACCESS_KEY="asecretkey"
 $ export AWS_DEFAULT_REGION="us-west-2
 
-
-
 Method3:
 --------
 provider "aws" {
@@ -294,8 +254,6 @@ provider "aws" {
   shared_credentials_file = "/Users/tf_user/.aws/creds"
   profile                 = "customprofile"
 }
-
-
 
 Understanding the resource and providers
 ---------------------------------------
@@ -313,7 +271,6 @@ provider "aws" {
   profile                 = "customprofile"
 }
 
-
 Resources:
 	Resources are the most important element in the Terraform language. Each resource block describes one or more infrastructure objects, such as virtual networks, compute instances, or higher-level components such as DNS records
 
@@ -323,11 +280,9 @@ Example
   	instance_type = "t2.micro"
 	}
 
-
 A resource block declares a resource of a given type ("aws_instance") with a given local name ("web"). The name is used to refer to this resource from elsewhere in the same Terraform module, but has no significance outside of the scope of a module.
 
 Note: Each resource type in turn belongs to a provider,
-
 
 Stages in the terraform
 ---------------------------
@@ -335,8 +290,6 @@ Stages in the terraform
 1.	Write : IAC
 2.  plan:: plan  the changes before applying
 3.  Create:: Reproduce the infrastuture
-
-
 
 Use case: Creating a docker container from image.
 https://github.com/anandvamsi/terraform-recipes-/blob/master/docker/container_creation/main.tf
@@ -351,11 +304,6 @@ use Case: Creating a instance
 https://github.com/anandvamsi/terraform-recipes-/tree/master/single-instance
 
 
-
-
-
-
-
 terraform state show 
 Terraform refresh: Reconciling real-world drift
 lifecycle option 
@@ -368,11 +316,6 @@ lifecycle option
 #S3 bucket
 		 - Bucket creation
 		 - Bucket life cycle creation 
-
-
-
-
-
 
 
 #terraform show 
@@ -419,13 +362,10 @@ resource "docker_image" "image_id" {
     name   = "docker.io/ghost"
 }
 
-
 Outputs:
 
 container_name = "myblog"
 ip_address = "172.17.0.2"
-
-
 
 terraform state show
 ----------------------------
@@ -434,19 +374,14 @@ To inspect only specfic resources
  terraform state show aws_instance.example
 
 
-
 terraform refresh
 -------------------
 What Terraform is doing here is reconciling the resources tracked by the state file with the real world
 
 It does this by querying your infrastructure providers to find out what's actually running and the current configuration, and updating the state file with this new information. Terraform is designed to co-exist with other tools as well as manually provisioned resources and so it only refreshes resources under its management.
 
-
 Notes:
 Running refresh does not modify infrastructure, but does modify the state file
-
-
-
 
 [root@kworkernode1 example2]# cksum terraform.tfstate
 1438403226 5653 terraform.tfstate
@@ -454,9 +389,6 @@ Running refresh does not modify infrastructure, but does modify the state file
 Do the changes to the resources
 [root@kworkernode1 example2]# cksum terraform.tfstate
 452845953 5701 terraform.tfstate
-
-
-
 
 Lifecycle options: Configuring how Terraform manages drift
 ----------------------------------------------------------------
@@ -469,8 +401,6 @@ lifecycle {
 Terraform provides some lifecycle configuration options for every resource, regardless of provider, that give you more control over how Terraform reconciles your desired configuration against state when generating plans.
 
 One of these options is prevent_destroy. When this is set to true, any plan that includes a destroy of this resource will return an error message. Use this flag to provide extra protection against the accidental deletion of any essential resources
-
-
 
 
 Life cycle hooks
